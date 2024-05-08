@@ -21,7 +21,8 @@ func Main() {
 	router := http.NewServeMux()
 
 	fs := http.FS(staticFiles)
-	router.Handle("GET /src/style.css", http.FileServer(fs))
+
+	router.Handle("/style.css", http.FileServer(fs))
 
 	router.HandleFunc("/", Handler)
 
