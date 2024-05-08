@@ -3,13 +3,18 @@ package handler
 // package main
 
 import (
-	"fmt"
+	"embed"
+	"html/template"
 	"log"
 	"net/http"
 )
 
+//go:embed all:src
+var staticFiles embed.FS
+var templates = template.Must(template.ParseFS(staticFiles, "src/templates/*.html"))
+
 func Handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "<h1>Success</h1>")
+	templates.ExecuteTemplate(w, "index.html", nil)
 }
 
 func Main() {
