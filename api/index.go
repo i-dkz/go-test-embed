@@ -14,22 +14,13 @@ var staticFiles embed.FS
 var templates = template.Must(template.ParseFS(staticFiles, "src/templates/*.html"))
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path == "/" {
-		err := templates.ExecuteTemplate(w, "index.html", nil)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-	} else {
-		fs := http.FileServer(http.FS(staticFiles))
-		fs.ServeHTTP(w, r)
-	}
+	templates.ExecuteTemplate(w, "index.html", nil)
 }
 
 func Main() {
 	router := http.NewServeMux()
 
-	// router.Handle("GET /", http.FileServerFS(staticFiles))
+	router.Handle("GET /src/", http.FileServerFS(staticFiles))
 
 	router.HandleFunc("GET /", Handler)
 
