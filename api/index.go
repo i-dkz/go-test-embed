@@ -1,6 +1,6 @@
-// package handler
+package handler
 
-package main
+// package main
 
 import (
 	"html/template"
@@ -15,7 +15,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	templates.ExecuteTemplate(w, "index.html", nil)
 }
 
-func main() {
+func Main() {
 	router := http.NewServeMux()
 
 	fs := http.FileServer(http.Dir("src"))
