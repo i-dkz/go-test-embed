@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-//go:embed src/templates/* src/style.css
+//go:embed all:src
 var staticFiles embed.FS
 var templates = template.Must(template.ParseFS(staticFiles, "src/templates/*.html"))
 
@@ -21,7 +21,7 @@ func Main() {
 	router := http.NewServeMux()
 
 	fs := http.FS(staticFiles)
-	router.Handle("GET /api/src/style.css", http.FileServer(fs))
+	router.Handle("GET /src/", http.FileServer(fs))
 
 	router.HandleFunc("/", Handler)
 
