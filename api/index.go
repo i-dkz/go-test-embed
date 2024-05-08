@@ -20,11 +20,10 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 func Main() {
 	router := http.NewServeMux()
 
-	fs := http.FS(staticFiles)
-
-	router.Handle("/style.css", http.FileServer(fs))
+	router.Handle("GET /src/", http.FileServerFS(staticFiles))
 
 	router.HandleFunc("/", Handler)
 
+	log.Println("LISTENING AT PORT:8080")
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
