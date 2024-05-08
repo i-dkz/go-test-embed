@@ -1,24 +1,25 @@
-package handler
+// package handler
 
-// package main
+package main
 
 import (
-	"embed"
 	"html/template"
 	"log"
 	"net/http"
 )
 
-//go:embed all:src
-var staticFiles embed.FS
-var templates = template.Must(template.ParseFS(staticFiles, "src/templates/*.html"))
+var templates = template.Must(template.ParseFiles("src/templates/index.html"))
 
 func Handler(w http.ResponseWriter, r *http.Request) {
+
 	templates.ExecuteTemplate(w, "index.html", nil)
 }
 
-func Main() {
+func main() {
 	router := http.NewServeMux()
+
+	fs := http.FileServer(http.Dir("src"))
+	router.Handle("GET /src/", http.StripPrefix("/src/", fs))
 
 	router.HandleFunc("GET /", Handler)
 
