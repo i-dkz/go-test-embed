@@ -15,7 +15,7 @@ var staticFiles embed.FS
 var templates = template.Must(template.ParseFS(staticFiles, "src/templates/*.html"))
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path == "/src/style.css" {
+	if r.URL.Path == "/api/src/style.css" {
 		fmt.Fprintf(w, "<h1>Route: %s</h1>", r.URL.Path)
 	}
 	templates.ExecuteTemplate(w, "index.html", nil)
@@ -25,8 +25,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 func Main() {
 	router := http.NewServeMux()
 
-	router.HandleFunc("GET /", Handler)
-	router.HandleFunc("GET /src/", Handler)
+	router.HandleFunc("GET /api/index", Handler)
+	router.HandleFunc("GET /api/src/", Handler)
 
 	log.Println("LISTENING AT PORT:8080")
 	log.Fatal(http.ListenAndServe(":8080", router))
