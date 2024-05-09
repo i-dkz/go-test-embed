@@ -46,7 +46,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 func Main() {
 	router := http.NewServeMux()
 
-	router.HandleFunc("/", Handler)
+	router.HandleFunc("GET /", Handler)
 
 	log.Println("LISTENING AT PORT:8080")
 	log.Fatal(http.ListenAndServe(":8080", router))
