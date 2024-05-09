@@ -15,30 +15,20 @@ var staticFiles embed.FS
 var templates = template.Must(template.ParseFS(staticFiles, "src/templates/*.html"))
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	switch r.URL.Path {
-	case "/":
-		err := templates.ExecuteTemplate(w, "index.html", nil)
-		if err != nil {
-			http.Error(w, err.Error()+"FUCK I HATE VERCEL /", http.StatusInternalServerError)
-			return
-		}
-	case "/src/style.css":
-		file, err := staticFiles.Open("src/style.css")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusNotFound)
-			return
-		}
-		defer file.Close()
-
-		w.Header().Set("Content-Type", "text/css")
-		_, err = io.Copy(w, file)
-		if err != nil {
-			http.Error(w, err.Error()+"FUCK I HATE VERCEL /style", http.StatusInternalServerError)
-			return
-		}
-	default:
-		http.NotFound(w, r)
+	file, err := staticFiles.Open("src/style.css")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
 	}
+	defer file.Close()
+
+	w.Header().Set("Content-Type", "text/css")
+	_, err = io.Copy(w, file)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	templates.ExecuteTemplate(w, "index.html", nil)
 }
 
 func Main() {
