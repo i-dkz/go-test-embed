@@ -15,11 +15,11 @@ var staticFiles embed.FS
 var templates = template.Must(template.ParseFS(staticFiles, "home.html"))
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path == "/api/index" {
-		templates.ExecuteTemplate(w, "home.html", nil)
-	}
 
-	fmt.Fprintf(w, "<h1>Route: %s</h1>", r.URL.Path)
+	fmt.Fprintf(w, `
+	<link rel="stylesheet" href="../style.css" />
+	<h1>Route: %s</h1>
+	`, r.URL.Path)
 }
 
 func Main() {
