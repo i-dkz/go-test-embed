@@ -17,8 +17,19 @@ var templates = template.Must(template.ParseFS(staticFiles, "home.html"))
 func Handler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, `
-	<link rel="stylesheet" href="../style.css" />
-	<h1>Route: %s</h1>
+	<!DOCTYPE html>
+		<html lang="en">
+  			<head>
+    			<meta charset="UTF-8" />
+    			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    			<title>Success</title>
+    			<link rel="stylesheet" href="../style.css" />
+  			</head>
+  			<body>
+    			<h1>Route: %s
+    			</h1>
+  			</body>
+		</html>
 	`, r.URL.Path)
 }
 
