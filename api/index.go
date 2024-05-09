@@ -39,8 +39,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	// default:
 	// 	http.NotFound(w, r)
 	// }
-	data := r.URL.Path
-	templates.ExecuteTemplate(w, "index.html", data)
+	// data := r.URL.Path
+	templates.ExecuteTemplate(w, "index.html", nil)
 }
 
 func Main() {
