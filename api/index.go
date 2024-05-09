@@ -10,13 +10,13 @@ import (
 	"net/http"
 )
 
-//go:embed index.html style.css
+//go:embed home.html style.css
 var staticFiles embed.FS
-var templates = template.Must(template.ParseFS(staticFiles, "index.html"))
+var templates = template.Must(template.ParseFS(staticFiles, "home.html"))
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 
-	templates.ExecuteTemplate(w, "index.html", nil)
+	templates.ExecuteTemplate(w, "home.html", nil)
 
 	fmt.Fprintf(w, "<h1>Route: %s</h1>", r.URL.Path)
 }
