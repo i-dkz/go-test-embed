@@ -4,6 +4,7 @@ package handler
 
 import (
 	"embed"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -18,6 +19,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		err := templates.ExecuteTemplate(w, "index.html", nil)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			fmt.Printf("<h1>Error %s</h1>", err)
 			return
 		}
 	}
