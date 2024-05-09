@@ -47,6 +47,7 @@ func Main() {
 	router := http.NewServeMux()
 
 	router.HandleFunc("GET /", Handler)
+	router.Handle("GET /src/", http.StripPrefix("/src/", http.FileServer(http.FS(staticFiles))))
 
 	log.Println("LISTENING AT PORT:8080")
 	log.Fatal(http.ListenAndServe(":8080", router))
