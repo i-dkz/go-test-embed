@@ -15,7 +15,7 @@ var staticFiles embed.FS
 var templates = template.Must(template.ParseFS(staticFiles, "src/templates/*.html"))
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("<h1>Route: %s</h1> ", r.URL.Path)
+	fmt.Fprintf(w, "<h1>Route: %s</h1>", r.URL.Path)
 }
 
 func Main() {
