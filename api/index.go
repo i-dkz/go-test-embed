@@ -37,7 +37,7 @@ func Main() {
 	router := http.NewServeMux()
 
 	router.HandleFunc("GET /", Handler)
-	router.HandleFunc("GET https://go-test-embed.vercel.app/style.css", Handler)
+	router.HandleFunc("GET /api/style.css", Handler)
 
 	log.Println("LISTENING AT PORT:8080")
 	log.Fatal(http.ListenAndServe(":8080", router))
