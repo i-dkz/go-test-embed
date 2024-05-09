@@ -3,13 +3,10 @@ package handler
 // package main
 
 import (
-	"bytes"
 	"embed"
 	"html/template"
-	"io"
 	"log"
 	"net/http"
-	"time"
 )
 
 //go:embed all:src
@@ -23,24 +20,6 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-	} else if r.URL.Path == "/src/style.css" {
-		file, err := staticFiles.Open("src/style.css")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusNotFound)
-			return
-		}
-		defer file.Close()
-
-		cssContent, err := io.ReadAll(file)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		w.Header().Set("Content-Type", "text/css")
-		http.ServeContent(w, r, "style.css", time.Time{}, bytes.NewReader(cssContent))
-	} else {
-		http.NotFound(w, r)
 	}
 }
 
