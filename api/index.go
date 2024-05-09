@@ -10,9 +10,9 @@ import (
 	"net/http"
 )
 
-//go:embed all:src
+//go:embed index.html style.css
 var staticFiles embed.FS
-var templates = template.Must(template.ParseFS(staticFiles, "src/templates/*.html"))
+var templates = template.Must(template.ParseFS(staticFiles, "index.html"))
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 
