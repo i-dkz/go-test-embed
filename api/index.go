@@ -16,8 +16,9 @@ var templates = template.Must(template.ParseFS(staticFiles, "src/templates/*.htm
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
-	case "/":
-		err := templates.ExecuteTemplate(w, "index.html", nil)
+	case "/api/index":
+		data := r.URL.Path
+		err := templates.ExecuteTemplate(w, "index.html", data)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
