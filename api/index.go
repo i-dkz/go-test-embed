@@ -1,6 +1,6 @@
-// package handler
+package handler
 
-package main
+// package main
 
 import (
 	"embed"
@@ -41,7 +41,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func main() {
+func Main() {
 	router := http.NewServeMux()
 
 	router.HandleFunc("GET /", Handler)
