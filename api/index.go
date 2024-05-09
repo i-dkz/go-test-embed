@@ -3,11 +3,13 @@ package handler
 // package main
 
 import (
+	"bytes"
 	"embed"
 	"html/template"
 	"io"
 	"log"
 	"net/http"
+	"time"
 )
 
 //go:embed all:src
@@ -15,20 +17,31 @@ var staticFiles embed.FS
 var templates = template.Must(template.ParseFS(staticFiles, "src/templates/*.html"))
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	file, err := staticFiles.Open("src/style.css")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusNotFound)
-		return
-	}
-	defer file.Close()
+	if r.URL.Path == "/" {
+		err := templates.ExecuteTemplate(w, "index.html", nil)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	} else if r.URL.Path == "/src/style.css" {
+		file, err := staticFiles.Open("src/style.css")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
+		defer file.Close()
 
-	w.Header().Set("Content-Type", "text/css")
-	_, err = io.Copy(w, file)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		cssContent, err := io.ReadAll(file)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "text/css")
+		http.ServeContent(w, r, "style.css", time.Time{}, bytes.NewReader(cssContent))
+	} else {
+		http.NotFound(w, r)
 	}
-	templates.ExecuteTemplate(w, "index.html", nil)
 }
 
 func Main() {
