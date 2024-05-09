@@ -23,7 +23,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
     			<meta charset="UTF-8" />
     			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
     			<title>Success</title>
-    			<link rel="stylesheet" href="../style.css" />
+    			<link rel="stylesheet" href="/api/index/style.css" />
   			</head>
   			<body>
     			<h1>Route: %s
