@@ -80,6 +80,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Println("Email sent successfully!")
+	fmt.Sprintln("Sending email")
 	w.WriteHeader(http.StatusOK)
 
 }
