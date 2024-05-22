@@ -14,10 +14,11 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func Init() {
+func Init(w http.ResponseWriter) {
 	err := godotenv.Load()
 	if err != nil {
 		fmt.Println(err)
+		http.Error(w, "Error loading .env file", http.StatusInternalServerError)
 		log.Fatal("Error loading .env file")
 	}
 }
@@ -26,8 +27,6 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	// Sender's email address and password
 	from := "zachflentgewong@gmail.com"
 	appPass := os.Getenv("EMAIL_PASSWORD")
-
-	fmt.Println(appPass)
 
 	// Recipient's email address
 	to := []string{"zachflentgewong@gmail.com"}
