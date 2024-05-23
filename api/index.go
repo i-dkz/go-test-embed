@@ -33,7 +33,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	appPass := os.Getenv("EMAIL_PASSWORD")
 
 	// Recipient's email address
-	to := []string{"zachflentgewong@gmail.com"}
+	to := []string{"zflentge@bestbuycanada.ca"}
 
 	// Gmail SMTP server settings
 	smtpHost := "smtp.gmail.com"
