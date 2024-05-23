@@ -3,13 +3,13 @@ package handler
 // package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/smtp"
 	"os"
-	"strings"
 
 	"github.com/joho/godotenv"
 )
@@ -24,6 +24,10 @@ func Init(w http.ResponseWriter) {
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	// Sender's email address and password
 	from := "zachflentgewong@gmail.com"
 	appPass := os.Getenv("EMAIL_PASSWORD")
@@ -42,24 +46,19 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Parse the subject and body from the request body
-	requestBody := string(body)
-	fmt.Println("Request Body:", requestBody)
-
-	parts := strings.Split(requestBody, "&")
-	if len(parts) != 2 {
-		http.Error(w, "Invalid request format", http.StatusBadRequest)
+	// Parse the JSON request body
+	var requestData struct {
+		Subject string `json:"subject"`
+		Body    string `json:"body"`
+	}
+	err = json.Unmarshal(body, &requestData)
+	if err != nil {
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
 		return
 	}
 
-	var subject, messageBody string
-	for _, part := range parts {
-		if strings.HasPrefix(part, "subject=") {
-			subject = strings.TrimPrefix(part, "subject=")
-		} else if strings.HasPrefix(part, "body=") {
-			messageBody = strings.TrimPrefix(part, "body=")
-		}
-	}
+	subject := requestData.Subject
+	messageBody := requestData.Body
 
 	fmt.Println("Subject:", subject)
 	fmt.Println("Message Body:", messageBody)
